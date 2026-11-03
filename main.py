@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import scrolledtext
 from PIL import Image, ImageTk
-from Languges.lan import *
+from Settings.lan import *
+from functions import *
 
 IMAGE_PATH = "Images/glav.png"
 
-with open("Languges/lan_.txt", "r", encoding="utf-8") as file:
+with open("Settings/lan_.txt", "r", encoding="utf-8") as file:
     LangugesNomer = file.read()
 
 # ------- ПЕРВОЕ ОКНО (SPLASH) -------
@@ -54,30 +55,30 @@ def open_main():
     label_image.image = photo_main  # Защита от сборщика мусора
     label_image.place(x=220, y=20)
 
-    # ------- 2. ВЕРХНЯЯ ПАНЕЛЬ СТАТУСА (HEADER) -----w--
-    status_frame = tk.Frame(root, bg="#030914")
-    status_frame.place(x=20, y=20, width=180, height=140)
+    # ------- 2. ШАБЛОН ВЫВОДА ДОП. ИНФОРМАЦИИ -----w--
+    # status_frame = tk.Frame(root, bg="#030914")
+    # status_frame.place(x=20, y=20, width=180, height=140)
 
-    tk.Label(status_frame, text="SYSTEM: ONLINE", fg=CYAN, bg="#030914", font=("Courier", 11, "bold")).pack(anchor="w")
-    tk.Label(status_frame, text="CORE TEMP: 42°C", fg=TEXT_COLOR, bg="#030914", font=("Courier", 10)).pack(anchor="w", pady=2)
-    tk.Label(status_frame, text="AI SYNC: 98.4%", fg=TEXT_COLOR, bg="#030914", font=("Courier", 10)).pack(anchor="w")
+    # tk.Label(status_frame, text="SYSTEM: ONLINE", fg=CYAN, bg="#030914", font=("Courier", 11, "bold")).pack(anchor="w")
+    # tk.Label(status_frame, text="CORE TEMP: 42°C", fg=TEXT_COLOR, bg="#030914", font=("Courier", 10)).pack(anchor="w", pady=2)
+    # tk.Label(status_frame, text="AI SYNC: 98.4%", fg=TEXT_COLOR, bg="#030914", font=("Courier", 10)).pack(anchor="w")
     
     # Небольшая неоновая полоса загрузки
-    progress_bg = tk.Frame(status_frame, bg="#112240", height=4)
-    progress_bg.pack(fill="x", pady=10)
-    progress_fill = tk.Frame(progress_bg, bg=CYAN, height=4, width=120)
-    progress_fill.pack(side="left")
+    # progress_bg = tk.Frame(status_frame, bg="#112240", height=4)
+    # progress_bg.pack(fill="x", pady=10)
+    # progress_fill = tk.Frame(progress_bg, bg=CYAN, height=4, width=120)
+    # progress_fill.pack(side="left")
 
-    # ------- 3. ПРАВАЯ ПАНЕЛЬ МОНИТОРИНГА РЕСУРСОВ -------
-    resources_frame = tk.LabelFrame(root, text="[ TELEMETRY ]", fg=CYAN, bg="#030914", font=("Courier", 10, "bold"), bd=1, relief="flat")
-    resources_frame.place(x=500, y=20, width=180, height=140)
+    # ------- 3. ШАБЛОН ВЫВОДА ДОП. ИНФОРМАЦИИ -------
+    # resources_frame = tk.LabelFrame(root, text="[ TELEMETRY ]", fg=CYAN, bg="#030914", font=("Courier", 10, "bold"), bd=1, relief="flat")
+    # resources_frame.place(x=500, y=20, width=180, height=140)
 
-    cpu_label = tk.Label(resources_frame, text="CPU: 12%", fg=TEXT_COLOR, bg="#030914", font=("Courier", 10))
-    cpu_label.pack(anchor="w", padx=5, pady=2)
-    ram_label = tk.Label(resources_frame, text="RAM: 4.2 GB", fg=TEXT_COLOR, bg="#030914", font=("Courier", 10))
-    ram_label.pack(anchor="w", padx=5, pady=2)
-    net_label = tk.Label(resources_frame, text="NET: SECURE", fg=CYAN, bg="#030914", font=("Courier", 10))
-    net_label.pack(anchor="w", padx=5, pady=2)
+    # cpu_label = tk.Label(resources_frame, text="CPU: 12%", fg=TEXT_COLOR, bg="#030914", font=("Courier", 10))
+    # cpu_label.pack(anchor="w", padx=5, pady=2)
+    # ram_label = tk.Label(resources_frame, text="RAM: 4.2 GB", fg=TEXT_COLOR, bg="#030914", font=("Courier", 10))
+    # ram_label.pack(anchor="w", padx=5, pady=2)
+    # net_label = tk.Label(resources_frame, text="NET: SECURE", fg=CYAN, bg="#030914", font=("Courier", 10))
+    # net_label.pack(anchor="w", padx=5, pady=2)
 
     # ------- 4. ГЛАВНЫЙ ЭКРАН ТЕКСТОВОЙ КОНСОЛИ (ДИАЛОГ С ИИ) -------
     console_frame = tk.Frame(root, bg=DARK_BLUE, highlightbackground=CYAN, highlightthickness=1)
@@ -96,9 +97,9 @@ def open_main():
     
     # Стартовый текст терминала
     console_output.insert(tk.END, f"{loading_console_0[int(LangugesNomer)]}\n")
-    console_output.insert(tk.END, f"{all_system_normal_1[int(LangugesNomer)]}\n")
+    console_output.insert(tk.END, f"{all_system_normal_1[int(LangugesNomer)]}\n\n")
+    console_output.insert(tk.END, f"{commands_help_4[int(LangugesNomer)]}\n\n")
     console_output.insert(tk.END, f"{your_service_2[int(LangugesNomer)]}\n\n")
-    console_output.configure(state='disabled') # Запрещаем пользователю стирать логи вручную
 
     # ------- 5. ПОЛЕ ВВОДА КОМАНД (ФУТЕР) -------
     input_frame = tk.Frame(root, bg="#030914", highlightbackground="#112240", highlightthickness=1)
@@ -118,37 +119,25 @@ def open_main():
     command_entry.focus() # Автофокус на поле ввода при старте
 
     # ------- 6. КНОПКА ОТПРАВКИ КОМАНДЫ -------
-    def send_command(event=None):
-        command = command_entry.get().strip()
-        if command:
-            console_output.configure(state='normal')
-            console_output.insert(tk.END, f"\nUser: {command}\n")
-            
-            # Логика ответа ИИ (заглушка для ваших будущих функций)
-            console_output.insert(tk.END, f"Jarvis: Обрабатываю команду [{command}]...\n")
-            
-            console_output.configure(state='disabled')
-            console_output.see(tk.END) # Автоскролл вниз
-            command_entry.delete(0, tk.END)
 
     # Привязываем отправку и к кнопке, и к клавише Enter
-    command_entry.bind("<Return>", send_command)
+    command_entry.bind("<Return>", lambda event: send_command(command_entry, console_output, tk))
 
     send_btn = tk.Button(
         input_frame, 
-        text="EXECUTE", 
+        text=send_message_3[int(LangugesNomer)], 
         bg="#112240", 
         fg=CYAN, 
         activebackground=CYAN, 
         activeforeground=DARK_BLUE,
         font=("Courier", 10, "bold"), 
         bd=0, 
-        command=send_command
+        command=lambda: send_command(command_entry, console_output, tk)
     )
     send_btn.place(x=550, y=7, width=100, height=30)
 
     # ------- 7. НИЖНЯЯ СТРОКА СОСТОЯНИЯ (FOOTER) -------
-    footer_label = tk.Label(root, text="SECURE CONSOLE // ORBITAL PROTOCOL V4.0", fg="#334155", bg="#030914", font=("Courier", 8))
+    footer_label = tk.Label(root, text="ORBITAL NEXT | v1.0 BETA", fg="#334155", bg="#030914", font=("Courier", 8))
     footer_label.place(x=20, y=840)
 
     root.mainloop()
