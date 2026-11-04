@@ -1,9 +1,14 @@
 from Settings.lan import *
-
-with open("Settings/lan_.txt", "r", encoding="utf-8") as file:
-    LangugesNomer = file.read()
+import json
 
 def send_command(command_entry, console_output, tk, event = None):
+    with open("Settings/settings.json", "r", encoding="utf-8") as file:
+        OptionSet = json.load(file)
+
+    LangugesNomer = OptionSet["Lan"]
+    User = OptionSet["User"]
+    Orbital = OptionSet["Orbital"]
+
     command = command_entry.get().strip()
 
     def remove():
@@ -13,9 +18,9 @@ def send_command(command_entry, console_output, tk, event = None):
 
     if command:
         console_output.configure(state='normal')
-        console_output.insert(tk.END, f"\nUser: {command}\n")
+        console_output.insert(tk.END, f"\n{User}: {command}\n")
             
-        console_output.insert(tk.END, f"Jarvis: Обрабатываю команду [{command}]...\n")
+        console_output.insert(tk.END, f"{Orbital}: {command_processing_5[LangugesNomer]} [{command}]...\n")
 
         match command:
             case ("/help"):
@@ -24,10 +29,19 @@ def send_command(command_entry, console_output, tk, event = None):
             case ("/settings"):
                 remove()
                 settings_window()
+            case _:
+                remove()
 
 
 def settings_window():
     from tkinter import Tk, Label, Entry, StringVar, OptionMenu, Button
+
+    with open("Settings/settings.json", "r", encoding="utf-8") as file:
+        OptionSet = json.load(file)
+
+    LangugesNomer = OptionSet["Lan"]
+    User = OptionSet["User"]
+    Orbital = OptionSet["Orbital"]
 
     # ----------------- НАСТРОЙКИ ОКНА -----------------
 
@@ -48,21 +62,23 @@ def settings_window():
     Label(root, text="ORBITAL SETTINGS", bg=style["bg"],
           fg=style["fg"], font=("Courier", 16, "bold")).pack(pady=30)
 
-    Label(root, text="Имя Orbital:", **style).pack(pady=(15, 5))
+    Label(root, text=f"{name_7[LangugesNomer]} Orbital:", **style).pack(pady=(15, 5))
     orbital_name = Entry(root, bg="#0a192f", fg="white",
                          insertbackground="#00f0ff", relief="flat",
                          font=("Courier", 12), justify="center")
+    orbital_name.insert(0, Orbital)
     orbital_name.pack(ipady=8)
 
-    Label(root, text="Имя User:", **style).pack(pady=(25, 5))
+    Label(root, text=f"{name_7[LangugesNomer]} User:", **style).pack(pady=(25, 5))
     user_name = Entry(root, bg="#0a192f", fg="white",
                       insertbackground="#00f0ff", relief="flat",
                       font=("Courier", 12), justify="center")
+    user_name.insert(0, User)
     user_name.pack(ipady=8)
 
     # ----------------- ВЫБОР ЯЗЫКА -----------------
 
-    language = StringVar(root, value="Русский")
+    language = StringVar(root, value="English" if LangugesNomer == 0 else "Русский")
 
     language_menu = OptionMenu(
         root, language,
@@ -93,17 +109,20 @@ def settings_window():
 
     # ----------------- КНОПКА ПРИМЕНИТЬ -----------------
 
-    settings = {}
 
     def apply_settings():
-        settings.update({
-            "orbital_name": orbital_name.get(),
-            "user_name": user_name.get(),
-            "language": language.get()
-        })
+        settings = {
+            "Lan": 0 if language.get() == "English" else 1,
+            "User": user_name.get(),
+            "Orbital": orbital_name.get()
+        }
+
+        with open("Settings/settings.json", "w", encoding="utf-8") as file:
+            json.dump(settings, file, ensure_ascii=False, indent=4)
+
         root.destroy()
 
-    Button(root, text="ПРИМЕНИТЬ", command=apply_settings,
+    Button(root, text=apply_button_6[LangugesNomer], command=apply_settings,
            bg="#00f0ff", fg="#030914",
            activebackground="#ffffff",
            font=("Courier", 11, "bold"),
@@ -111,4 +130,3 @@ def settings_window():
            width=20, pady=10).pack(side="bottom", pady=30)
 
     root.mainloop()
-    return settings

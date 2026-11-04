@@ -9,3 +9,6 @@ commands_help_4 = ["""Basic commands:
 """Основные команды:
     /help - Вывести информацию о командах
     /settings - Открыть меню настроек"""]
+command_processing_5 = ["Processing the command", "Обрабатываю команду"]
+apply_button_6 = ["Apply", "Применить"]
+name_7 = ["Name", "Имя"]

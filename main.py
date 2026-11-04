@@ -3,11 +3,14 @@ from tkinter import scrolledtext
 from PIL import Image, ImageTk
 from Settings.lan import *
 from functions import *
+import json
 
 IMAGE_PATH = "Images/glav.png"
 
-with open("Settings/lan_.txt", "r", encoding="utf-8") as file:
-    LangugesNomer = file.read()
+with open("Settings/settings.json", "r", encoding="utf-8") as file:
+    OptionSet = json.load(file)
+
+LangugesNomer = OptionSet["Lan"]
 
 # ------- ПЕРВОЕ ОКНО (SPLASH) -------
 splash = tk.Tk()
